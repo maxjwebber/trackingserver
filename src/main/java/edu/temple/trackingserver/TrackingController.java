@@ -1,5 +1,4 @@
 package edu.temple.trackingserver;
-package edu.temple.realestate;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -7,21 +6,29 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.concurrent.atomic.AtomicLong;
+import java.time.LocalDateTime;
+import javax.servlet.http.HttpServletRequest;
 
+@RestController
 public class TrackingController {
-    private final AtomicLong counter = new AtomicLong();
+
+    TrackingTree dataStore = new TrackingTree();
     @GetMapping("/track-view")
-    public Tracking trackingRequest(
+    public TrackingItem trackingRequest(
 
-            @RequestParam(value = "statistic", defaultValue = "_") String statistic,
-            @RequestParam(value = "field", defaultValue = "_") String field,
-            @RequestParam(value = "startdate", defaultValue = "01/01/1800") Date startDate,
-            @RequestParam(value = "enddate", defaultValue = "12/31/2020") Date endDate,
-            @RequestParam(value = "zipcode", defaultValue = "99999") int zipCode)
+            @RequestParam(value = "userID") int userID,
+            @RequestParam(value = "thisURL") String thisURL,
+            @RequestParam(value = "browser") String browser,
+            @RequestParam(value = "resolutionX") int resolutionX,
+            @RequestParam(value = "resolutionY") int resolutionY,
+            HttpServletRequest request)
+
             throws IOException, ParseException {
-
-        return new Tracking(counter.incrementAndGet(), statistic,field,startDate,endDate,zipCode);
+        String ip = request.getHeader("X-FORWARDED-FOR");
+        LocalDateTime now = LocalDateTime.now();
+        dataStore.add(new TrackingItem(userID,thisURL,browser,resolutionX,resolutionY,now,ip));
+        return new TrackingItem(userID,thisURL,browser,resolutionX,resolutionY,now,ip);
     }
 }
+
+
