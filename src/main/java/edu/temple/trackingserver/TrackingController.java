@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
@@ -26,22 +28,29 @@ public class TrackingController {
             throws IOException, ParseException {
         String ip = request.getHeader("X-FORWARDED-FOR");
         LocalDateTime now = LocalDateTime.now();
-        dataStore.add(new TrackingItem(userID,thisURL,browser,resolutionX,resolutionY,now,ip));
-        return new TrackingItem(userID,thisURL,browser,resolutionX,resolutionY,now,ip);
+        TrackingItem newItem = new TrackingItem(userID,thisURL,browser,resolutionX,resolutionY,now,ip);
+        dataStore.add(newItem);
+        return newItem;
     }
-    @GetMapping("views")
+    @GetMapping("/views")
     public TrackingReport viewReport(
-            @RequestParam(value = "startDate") LocalDateTime startDate,
-            @RequestParam(value = "endDate") LocalDateTime endDate)
+            @RequestParam(value = "startDate") String startDateString,
+            @RequestParam(value = "endDate") String endDateString)
     {
-        if (endDate.isBefore(startDate))
+
+        if (endDateString.compareTo(startDateString) > 0)
         {
-            LocalDateTime temp = endDate;
-            endDate = startDate;
-            startDate = temp;
+            String temp = endDateString;
+            endDateString = startDateString;
+            startDateString = temp;
         }
+
+        LocalDateTime startDate = LocalDate.parse(startDateString,DateTimeFormatter.ISO_LOCAL_DATE).atStartOfDay();
+        LocalDateTime endDate = LocalDate.parse(endDateString,DateTimeFormatter.ISO_LOCAL_DATE).atTime(23,59,59);
+
         return dataStore.generateReport(startDate,endDate);
     }
 }
+
 
 

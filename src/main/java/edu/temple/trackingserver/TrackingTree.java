@@ -52,13 +52,24 @@ public class TrackingTree
         Map<String,Integer> URLs = new HashMap<>();
         Map<String,Integer> browsers = new HashMap<>();
         ArrayList<Integer> uniqueIDs = new ArrayList<>();
-        //BFS
+        boolean rootNotFound = true;
+        //find root for BFS
+        while(rootNotFound)
+        {
+            if (current.getDate().isBefore(startDate))
+                current=current.left;
+            else if (current.getDate().isAfter(endDate))
+                current=current.right;
+            else
+                rootNotFound=false;
+        }
+        //BFS starting from first valid root
         Queue<TrackingItem> q = new LinkedList<TrackingItem>();
         q.add(current);
         while (!q.isEmpty()) {
             current = q.remove();
             //validate
-            if (!current.getDate().isBefore(endDate)&&!current.getDate().isAfter(startDate))
+            if (!current.getDate().isAfter(endDate)&&!current.getDate().isBefore(startDate))
             {
                 //Process current node.
                 //1. add to uniqueIDs if the ID is unique
