@@ -14,7 +14,6 @@ public class TrackingItem
     String ip;
 
     TrackingItem left;
-    TrackingItem middle;
     TrackingItem right;
 
     public TrackingItem(int userID, String thisURL, String browser, int resolutionX, int resolutionY, LocalDateTime date, String ip)

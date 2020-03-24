@@ -5,10 +5,13 @@ public class TrackingReport
     int numUniques;
     String[] mostViewedURLs;
     String[] mostUsedBrowsers;
-    int[] numRequestsPer5Mins;
+    int[] numRequestsPerMin;
 
-    public TrackingReport(int numUniques,String[] mostViewedURLs,String[] mostUsedBrowsers,int[] numRequestsPer5Mins)
+    public TrackingReport(int numUniques,String[] mostViewedURLs,String[] mostUsedBrowsers,int[] numRequestsPerMin)
     {
-
+        this.numUniques=numUniques;
+        this.mostUsedBrowsers=mostUsedBrowsers;
+        this.mostViewedURLs=mostViewedURLs;
+        this.numRequestsPerMin = numRequestsPerMin;
     }
 }

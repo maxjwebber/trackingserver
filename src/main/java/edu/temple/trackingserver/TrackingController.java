@@ -29,6 +29,19 @@ public class TrackingController {
         dataStore.add(new TrackingItem(userID,thisURL,browser,resolutionX,resolutionY,now,ip));
         return new TrackingItem(userID,thisURL,browser,resolutionX,resolutionY,now,ip);
     }
+    @GetMapping("views")
+    public TrackingReport viewReport(
+            @RequestParam(value = "startDate") LocalDateTime startDate,
+            @RequestParam(value = "endDate") LocalDateTime endDate)
+    {
+        if (endDate.isBefore(startDate))
+        {
+            LocalDateTime temp = endDate;
+            endDate = startDate;
+            startDate = temp;
+        }
+        return dataStore.generateReport(startDate,endDate);
+    }
 }
 
 
