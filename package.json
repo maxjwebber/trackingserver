@@ -1,8 +1,8 @@
 {
   "name": "trackingserver",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "tracking server project for Practicum",
+  "main": "analytics.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,8 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/maxjwebber/trackingserver.git"
   },
-  "keywords": [],
-  "author": "",
+  "author": "max j webber",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/maxjwebber/trackingserver/issues"

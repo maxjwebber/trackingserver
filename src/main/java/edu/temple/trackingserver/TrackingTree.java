@@ -49,6 +49,12 @@ public class TrackingTree
         int[] numRequestsPerMin = new int[(int) Math.ceil(ChronoUnit.MINUTES.between(startDate, endDate))];
         Arrays.fill(numRequestsPerMin,0);
         TrackingItem current=trueRoot;
+        if (current==null)
+        {
+            String [] empty = new String[3];
+            Arrays.fill(empty,"");
+            return new TrackingReport(0,empty,empty,numRequestsPerMin);
+        }
         Map<String,Integer> URLs = new HashMap<>();
         Map<String,Integer> browsers = new HashMap<>();
         ArrayList<Integer> uniqueIDs = new ArrayList<>();
